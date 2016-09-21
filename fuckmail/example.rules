@@ -1,0 +1,9 @@
+from, sender
+mail@example.org
+lists/example
+
+# This is a comment
+
+to, cc
+me@my-business.org
+bussiness/important

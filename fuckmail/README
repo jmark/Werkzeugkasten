@@ -1,0 +1,17 @@
+jmark's Mail Handling Collection
+================================
+
+DISCLAIMER: (WiP) Use at your own risk! Major changes **highly** possible!
+
+I know, there are major security and stability issues. But it work's quite
+well, actually...
+
+fetch.pl $INI
+  : fetch and store mails from poop3 server to $INBOX
+
+filter.pl $INBOX $ROOT $RULES
+  : filter and shunt mails in $INBOX to $ROOT/<subdir> based on the rules in
+    $RULES file
+
+send.pl ...
+  : wip.
