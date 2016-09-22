@@ -1,0 +1,104 @@
+% Header-Datei für das Protokoll
+
+\documentclass[pdftex,12pt,a4paper,bibtotocnumbered,headinclude=true]{scrartcl}
+
+% UTF-8-Unterstuetzung, wichtig fuer deutsche Umlaute, etc.
+\usepackage[utf8]{inputenc}
+
+% zum Einbinden des Logos oben links
+\usepackage[pdftex]{graphicx}
+
+% Übersetzung sprachspezifischer Befehle im Dokument
+% (chapter -> Kapitel, table of contents -> Inhaltsverzeichnis, etc.,
+%  deutsche Silbentrennung)
+\usepackage[ngerman]{babel}
+
+% Colorieren von Text im Dokument
+\usepackage{color}
+
+% damit Gleitobjekte auch wirklich dort bleiben, 
+% wo sie auch definiert wurden !!!
+\usepackage{footnote} 	
+
+% schoene Kopfzeile
+\usepackage{scrpage2}
+\pagestyle{scrheadings}
+%\clearscrheadfoot % loescht mir sonst die Seitenzahlen
+\setlength{\headheight}{2cm}
+\ohead[]{TU Chemnitz - \today}
+\ihead[]{
+\includegraphics[width=2.5cm]{./logo_sw_bg}
+}
+
+% mehr Platz rausschinden
+\usepackage[compact]{titlesec}
+\titlespacing{\section}{10pt}{10pt}{10pt}
+%\titlespacing{\subsection}{0pt}{*0}{*0}
+%\titlespacing{\subsubsection}{0pt}{*0}{*0}
+
+% Bookmarks: anklickbares Inhaltsverzeichnis in der PDF auf der linken Seite
+\usepackage[pdftex,bookmarks=true]{hyperref}
+
+\begin{document}
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% nochn bisschen Platz ueberall schinden
+\setlength{\textwidth}{16.5cm}
+\setlength{\parskip}{0pt}
+\setlength{\parsep}{0pt}
+\setlength{\headsep}{10pt}
+\setlength{\topskip}{0pt}
+\setlength{\topmargin}{-1cm}
+\setlength{\topsep}{0pt}
+\setlength{\partopsep}{0pt}
+
+% verhindert automatisches Einruecken des Textes nach einer Leerzeile
+\parindent0pt
+
+\newcommand{\topBox}[1]{
+\framebox[\textwidth][l]{
+\hspace{0.2cm}
+\parbox{\textwidth}{
+\vspace{0.3cm}
+{\Large \bf Sitzungsprotokoll - FSR Physik}
+\begin{description}
+#1
+\end{description}
+\vspace{0.1cm}
+\emph{Beschlüsse:} \Abstimmung{Dafür}{Gegenstimme}{Enthaltung}
+\vspace{0.3cm}
+}}}
+
+\setcounter{section}{-1}
+\newcommand{\customTop}[2]{
+\addtocounter{section}{1}
+\phantomsection
+\addcontentsline{toc}{section}{Top \thesection \ - #1}
+\section*{Top \thesection \ - #1}
+\begin{itemize}
+#2
+\end{itemize}
+}
+
+\newcommand{\Abstimmung}[3]{
+{\bf(#1~$|$~#2~$|$~#3)}
+}
+
+\newcommand{\Unterschrift}[2]{
+\begin{tabbing}
+\= \underline{\hspace{7cm}}    
+\hspace{1.8cm} 		
+\= \underline{\hspace{7cm}} \\[0.1cm]
+\>	\quad Vorsitz: #1 
+\>	\quad Protokoll: #2   
+\end{tabbing}
+} 
+
+\pdfbookmark[1]{Inhaltsverzeichnis}{toc}
+
+\input{./body.tex}
+
+\end{document}          
+

@@ -1,0 +1,17 @@
+
+type distance   = Meter of float;;
+type duration   = Second of float;;
+type mass       = Kilogram of float;;
+
+
+(*type rational   = Nominator of 'a * Denominator of 'b;;*)
+
+type ('a,'b) product  = Product of 'a  * 'b;;
+type ('a,'b) fraction = Fraction of 'a  * 'b;;
+
+type velocity = (distance,duration) fraction;;
+type force    = ( (mass,distance) product, (duration,duration) product) fraction;;
+
+let normalize (frac : Fraction) : Fraction =
+    let (n,d) = frac in
+        Fraction(n /. d, 1)

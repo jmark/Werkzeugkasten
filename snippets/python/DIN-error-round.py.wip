@@ -1,0 +1,44 @@
+def error_round(x,threshold = 3):
+    import numpy as np
+
+    xL,xR = [],[]
+    if '{0:f}'.format(x).find('.') != -1:
+        xL,xR = '{0:f}'.format(x).split('.')
+    else:
+        xL,xR = '{0:d}'.format(x),'0'
+    
+    xL,xR = list(xL),list(xR)
+    xL,xR = np.array(xL).astype(int),np.array(xR).astype(int)
+
+    result = 0    
+    for i,digit in enumerate(xL,1):
+        exp = len(xL)-i
+        if 0 < digit < threshold:
+            result += digit*pow(10,exp)
+            if i < len(xL):
+                result += (xL[i]+1)*pow(10,exp-1)
+                if xL[i] < 9:
+                    return result,exp-1
+            return result,exp
+        elif digit >= threshold:
+            result += (digit+1)*pow(10,exp)
+            if digit < 9:
+                return result,exp
+            return result,exp+1
+            
+    for i,digit in enumerate(xR,1):
+        if 0 < digit < threshold:
+            result += digit*pow(10,-i)
+            if i < len(xR):
+                result += (xR[i]+1)*pow(10,-(i+1))
+                if xR[i] < 9:
+                    return result,-(i+1)
+            return result,-i
+        elif digit >= threshold:
+            result += (digit+1)*pow(10,-i)
+            if digit < 9:
+                return result,-i
+            return result,-i+1
+
+def error_format(value,error,roundPos):
+    return "%.*f(%d)" % (-roundPos,value,int(error*pow(10,-roundPos)))

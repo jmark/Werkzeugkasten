@@ -1,0 +1,128 @@
+# include <stdio.h>
+# include <string.h>
+# include <stdlib.h>
+# include <regex.h>
+
+//int findRegexp ( char * regexp, char * expr, char * result ) {
+
+    //size_t n = 0;
+    //n += strlen ( "echo \"") 
+    //    + strlen ( regexp )
+    //    + strlen ( "\" | grep -oP -e\"" ) 
+    //    + strlen ( expr )
+    //    + strlen ( "\"" );
+
+    //char * shellCmd = (char *) malloc ( n + 1);
+    //strcpy ( shellCmd, "echo \"" ); 
+    //strcat ( shellCmd, expr ); 
+    //strcat ( shellCmd, "\" | grep -oP -e\"" );
+    //strcat ( shellCmd, regexp );
+    //strcat ( shellCmd, "\"" );
+
+    //FILE * fp;
+    //fp = popen (shellCmd, "r");
+    //fgets (result, 50, fp); 
+    //fclose (fp);
+    //
+    //char * p = strchr ( result, '\n' );
+    //if ( p ) *p = '\0';
+
+ //   return 0;
+//}
+
+//static void user_regexp (   sqlite3_context *context, 
+//                            int argc, 
+//                            sqlite3_value **argv ) {
+//
+//    struct re_pattern_buffer buffer;
+//    const char *out;
+//    char *pattern;
+//    char *input_string;
+//    char *result;
+//    struct re_registers regs;
+//
+//    if (    ( sqlite3_value_type ( argv[0] ) != SQLITE_TEXT ) || 
+//            ( sqlite3_value_type ( argv[1] ) != SQLITE_TEXT ) ){
+//
+//            sqlite3_result_err("Improper argument types");
+//            return;
+//    }
+//
+//    re_set_syntax   ( RE_SYNTAX_POSIX_EGREP );
+//    memset          ( &buffer, 0, sizeof ( buffer ));
+//
+//    if ( ! ( pattern      = strdupa ( sqlite3_value_text ( argv[0] ))) ||
+//         ! ( input_string = strdupa ( sqlite3_value_text ( argv[1] ))) ){
+//
+//        sqlite3_result_err_nomem ( 
+//            "Could not allocate memory for strings" );
+//        return;
+//    }
+//
+//
+//    if ( out = re_compile_pattern ( pattern, strlen ( pattern ), &buffer ) ){
+//        sqlite3_result_err ( "Could not compile pattern!" );
+//        return;
+//    }
+//
+//    if ( re_match ( 
+//        &buffer, input_string, strlen (input_string ), 0, &regs ) < 0 ){ 
+//            sqlite3_result_int64(context, 0); 
+//    } else {
+//        result = strndupa (
+//            input_string + regs.start[0], regs.end[0] - regs.start[0] );    
+//        sqlite3_result_text ( context, result, -1, SQLITE_TRANSIENT );
+//    }
+//}
+
+
+int main ( int argc, char **argv ) {
+
+    char testString [30] = "#\\d\\d\\d";
+    char expr[90] = "Let's Play Minecraft #002 - Ein Haus am See";
+    char expr2[90];
+
+    strcpy ( expr2, expr );
+    char result [30] = "";
+
+    regmatch_t matchList[5];
+    regex_t regex;
+    int reti;
+    char msgbuff[100];
+
+    // Compile regex
+    reti = regcomp ( &regex, "#[[:digit:]]\\{3,3\\}", 0 );
+    if ( reti ) printf ( "False Regex!\n" );
+
+    reti = regexec ( &regex, expr, 5, matchList, 0 );
+    if ( ! reti ) {
+        puts ( "Match" );
+    }
+    else if ( reti == REG_NOMATCH ) {
+        puts ( "No Match" );
+    }
+    else {
+        regerror ( reti, &regex, msgbuff, sizeof ( msgbuff ));
+        printf ( "RegEx match failed: %s\n", msgbuff );
+        exit (1);
+    }
+
+    regfree ( &regex );
+
+    printf ( "%d - %d\n", matchList[0].rm_so, matchList[0].rm_eo);
+    printf ( "%d - %d\n", matchList[1].rm_so, matchList[0].rm_eo);
+    printf ( "%d - %d\n", matchList[2].rm_so, matchList[0].rm_eo);
+
+    int i = 0;
+    for ( i = matchList[0].rm_so ; i < matchList[0].rm_eo ; ++i ) {
+        printf ("%c", expr[i]);
+    }
+    printf ( "\n" );
+
+    //strcpy ( expr, argv[1] );
+
+    //findRegexp ( testString, expr, result );
+//    printf ( result );
+//    printf ( "\n" );
+    return 0;
+}

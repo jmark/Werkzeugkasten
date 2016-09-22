@@ -1,0 +1,74 @@
+\documentclass[11pt,a4paper]{book}
+
+\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage{blindtext}
+
+% =========================================== %
+% =========================================== %
+% Das muss in die Präambel.
+
+\newcounter{exercisectr}
+\newenvironment{exercise}{
+    \bigskip
+    \footnotesize
+    \noindent
+    \refstepcounter{exercisectr}
+    \textbf{Exercise \theexercisectr}
+}{}
+\numberwithin{exercisectr}{chapter}
+
+% =========================================== %
+% =========================================== %
+
+\begin{document}
+\tableofcontents
+
+% =========================================== %
+
+\chapter{Title of Chapter A}
+\blindtext 
+
+For a deeper understanding we refer to exercise \ref{exec:1a} in this section
+and exercise \ref{exec:2b} in the following one.
+
+\section{Section A}
+\blindtext
+
+% =========================================== %
+% So wird eine Übung erstellt.
+
+\begin{exercise}
+\label{exec:1a}
+    \blindtext
+\end{exercise}
+
+\begin{exercise}
+\label{exec:2a}
+    \blindtext
+\end{exercise}
+
+\begin{exercise}
+\label{exec:3a}
+    \blindtext
+\end{exercise}
+
+\chapter{Title of Chapter B}
+
+\section{Section B.a}
+\blindtext
+
+\section{Section B.b}
+\blindtext
+
+\begin{exercise}
+\label{exec:1b}
+    \blindtext
+\end{exercise}
+
+\begin{exercise}
+\label{exec:2b}
+    \blindtext
+\end{exercise}
+
+\end{document}

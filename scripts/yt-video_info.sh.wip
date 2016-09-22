@@ -1,0 +1,42 @@
+#!/usr/bin/env perl
+
+ID=$1
+urlencode() {
+    awk -niord '{printf RT?$0chr("0x"substr(RT,2)):$0}' RS=%..
+}
+
+# Gather all the video-information and split into the known
+# tags. Some of these are "keywords", "thumbnail_url", "title",
+# "author", etc.  Important here are "fmt_list" and
+# "fmt_encoded_stream_map". First one consists of the availlable
+# formats, encoded as integers. See
+# "http://en.wikipedia.org/wiki/YouTube#Quality_and_codecs" for 
+# more details. The second one uncovers the desired download urls
+# for all offered video formats by Youtube(TM).
+
+INFO_URL="http://www.youtube.com/get_video_info?video_id=$ID"
+#TMP=$(curl "$INFO_URL" | awk -v RS='&' -v FS='=' '{printf("[%s]=\"%s\" ",$1,$2)}')
+TMP=$(cat get_video_info | awk -v RS='&' -v FS='=' '{printf("[%s]=\"%s\" ",$1,$2)}')
+
+declare -A VINFO
+eval "VINFO=($TMP)"
+
+# fmt_list --> availlable video formats
+# adaptive_fmts --> stream urls ??
+# url_encoded_fmt_stream_map --> stream urls
+
+TMP=$(echo ${VINFO[url_encoded_fmt_stream_map]} | urlencode | awk -v RS='&' -v FS='=' '{printf("[%s]=\"%s\" ",$1,$2)}')
+#echo ${VINFO[url_encoded_fmt_stream_map]} | urlencode | awk -v RS='&' -v FS='=' '{printf("%s => %s\n",$1,$2)}'
+
+echo ${VINFO[fmt_list]} | urlencode
+
+# declare -a STREAMS
+# OIFS="$IFS";IFS=,
+# for line in $(echo ${VINFO[url_encoded_fmt_stream_map]} | urlencode)
+# do
+#     $STREAMS[$line
+# done
+# IFS="$OIFS"
+# 
+# eval "STREAMS=($TMP)"
+# echo $TMP

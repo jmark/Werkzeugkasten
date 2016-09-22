@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -u
+
+export JOB_DIR=$($1:?No job dir given!)
+export LOG_DIR=$($2:?No log dir given!)
+export FIN_DIR=$($3:?No fin dir given!)
+
+while true
+do
+    JOB=$(find ${JOB_DIR} -type f | sort -n | head -n1)
+    if [ "$JOB" ]
+    then
+        sleep 5
+    fi
+    $JOB 2>&1 > "$LOG_DIR/$JOB"
+    mv $LOG $FIN_DIR/$JOB
+done
